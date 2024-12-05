@@ -41,3 +41,25 @@ def ints(s: str) -> typing.List[int]:
     return lmap(int, re.findall(r"-?\d+", s))  # thanks mserrano!
 def regular_process(inp):
     return [i for i in inp.strip().split('\n') if i.strip != '']
+
+def factorial(n) -> int:
+    if n==1:
+        return 1
+    return n*factorial(n-1)
+def bit_not(n, numbits=16):
+        return (1 << numbits) - 1 - n
+
+def partitions(n, k):
+    if k == 1:
+        return [[n]]
+    if k == n:
+        return [[1] * n]
+    if k > n:
+        return []
+
+    result = []
+    for i in range(1, n - k + 2):
+        for sub_partition in partitions(n - i, k - 1):
+            result.append([i] + sub_partition)
+
+    return result

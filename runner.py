@@ -9,11 +9,13 @@ from functools import reduce
 import itertools
 import math
 import hashlib
+import json
 import re
 import typing
 from utils import *
 import argparse
 import traceback
+from copy import deepcopy
 
 # argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')
