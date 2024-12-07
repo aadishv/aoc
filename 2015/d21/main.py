@@ -31,10 +31,50 @@ partitions(n [size of total], k [number])
 """
 
 
+from re import X
+
+
+weapons = """
+Weapons:    Cost  Damage  Armor
+Dagger        8     4       0
+Shortsword   10     5       0
+Warhammer    25     6       0
+Longsword    40     7       0
+Greataxe     74     8       0
+"""
+armor = """
+Armor:      Cost  Damage  Armor
+Leather      13     0       1
+Chainmail    31     0       2
+Splintmail   53     0       3
+Bandedmail   75     0       4
+Platemail   102     0       5
+"""
+rings = """
+Rings:      Cost  Damage  Armor
+Damage +1    25     1       0
+Damage +2    50     2       0
+Damage +3   100     3       0
+Defense +1   20     0       1
+Defense +2   40     0       2
+Defense +3   80     0       3
+"""
+weapons = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', weapons)]
+armor = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', armor)] + [(0,0,0)]
+
+rings = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', rings)]
+rings = reduce(lambda a,b: a+b, [[(r, i) for r in rings if r != i] for i in rings], [])
+
+rings = [(int(a[0])+int(b[0]), int(a[1])+int(b[1]), int(a[2])+int(b[2])) for (a,b) in rings] + [(0,0,0)]
 
 def solve(sample) -> int:
     output = 0
-
+    for ring in rings:
+        for a in armor:
+            for weapon in weapons:
+                print("!", end="")
+    # We need to ensure that:
+        # my hit points/(9 - my armor)<=103/(my damage - 2)=t
     lines = regular_process(sample)
 
     return output

@@ -1,3 +1,4 @@
+from uuid import uuid4
 """ gemini-genned comments
 # Grid
 
@@ -25,25 +26,39 @@
 max/min(inp, key=...)
 sorted(iterator, key=...) (can use functools.cmp_to_key())
 reversed(iterator)
-reduced(function, iterator, initial)
+reduce(function, iterator, initial)
 itertools.permutations(iterator)
 partitions(n [size of total], k [number])
 """
 
-
-
 def solve(sample) -> int:
-    output = 0
+    TOTAL = 150
+    bottles = ints(sample)
+    bottles = [(i, random.random()) for i in bottles]
+    queue = [[i] for i in bottles]
+    n=0
+    while not all([sum([j[0] for j in i]) == TOTAL for i in queue]):
+        print("growing stage", n, len(queue))
+        n += 1
+        newq = []
+        for i in queue:
+            for j in list_subtract(bottles, i):
+                if sum([z[0] for z in i+[j]]) <= TOTAL:
+                    newq.append(i+[j])
+            if sum([z[0] for z in i]) == TOTAL:
+                newq.append(i)
+        queue = newq
+    queue = [set(j) for j in set([tuple(sorted(i)) for i in queue])]
+    queue = [[i[0] for i in j] for j in queue]
+    minimum_number = min([len(i) for i in queue])
+    print(len([i for i in queue if len(i) == minimum_number]))
 
-    lines = regular_process(sample)
 
-    return output
+
+
+    return 0
 
 
 SAMPLE = """
 """
-flag = 's'
-if flag == 's':
-    print(solve(SAMPLE))
-if flag == 'i':
-    print(solve(tester.INPUT))
+print(solve(tester.INPUT))

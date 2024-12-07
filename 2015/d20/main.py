@@ -30,14 +30,31 @@ itertools.permutations(iterator)
 partitions(n [size of total], k [number])
 """
 
+def factors(n):
+    return set(reduce(
+        list.__add__,
+        ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
 
 
-def solve(sample) -> int:
-    output = 0
+def solve(sample, target=36000000):
+    limit = target // 10  # Conservative upper bound
+    houses = [0] * limit
 
-    lines = regular_process(sample)
+    # Each elf visits its house number and multiples
+    for elf in range(1, limit):
+        # Update all houses this elf visits
+        n = 0
+        for house in range(elf, limit, elf):
+            houses[house] += elf * 11
+            n += 1
+            if n == 50:
+                break
 
-    return output
+        # Early exit check
+        if houses[elf] >= target:
+            return elf
+
+    return 0
 
 
 SAMPLE = """

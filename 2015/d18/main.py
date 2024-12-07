@@ -33,17 +33,35 @@ partitions(n [size of total], k [number])
 
 
 def solve(sample) -> int:
-    output = 0
-
     lines = regular_process(sample)
+    grid = Grid(sample, '', str, pad=True)
+    for i in [0, grid.width-1]:
+        for j in [0, grid.height-1]:
+            grid.grid[j][i] = '#'
+    for _ in range(100):
+        newgrid = deepcopy(grid)
+        for y in range(grid.height):
+            for x in range(grid.width):
+                total = sum([1 for r in grid.neighbors(x, y) if grid.grid[r[1]][r[0]] == '#'])
+                if grid.grid[y][x] == '.':
+                    if total == 3:
+                        newgrid.grid[y][x] = '#'
+                else:
+                    if total not in [2, 3]:
+                        newgrid.grid[y][x] = '.'
+        for i in [0, grid.width-1]:
+            for j in [0, grid.height-1]:
+                newgrid.grid[j][i] = '#'
+        grid = newgrid
+    print(('\n'.join([''.join(i) for i in newgrid.grid])).count('#'))
+    return 0
 
-    return output
 
-
-SAMPLE = """
+SAMPLE = """.#.#.#
+...##.
+#....#
+..#...
+#.#..#
+####..
 """
-flag = 's'
-if flag == 's':
-    print(solve(SAMPLE))
-if flag == 'i':
-    print(solve(tester.INPUT))
+print(solve(tester.INPUT))

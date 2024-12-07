@@ -16,6 +16,7 @@ from utils import *
 import argparse
 import traceback
 from copy import deepcopy
+import collections
 
 # argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')

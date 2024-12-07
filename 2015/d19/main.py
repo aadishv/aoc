@@ -30,19 +30,53 @@ itertools.permutations(iterator)
 partitions(n [size of total], k [number])
 """
 
-
+def indexes(l, match):
+    return [i for i in range(len(l)) if l[i:i+len(match)] == match]
 
 def solve(sample) -> int:
+    lines = regular_process(sample)
+    rules = '\n'.join(lines[:-1])
+    elements = set(re.findall(r'[A-Z][a-z]?', ))
+    print(list(set())
     output = 0
 
-    lines = regular_process(sample)
 
-    return output
+    rules =
+    rules = sorted(rules, key=lambda x: len(x[0]), reverse=True)
+    #rules = [(r[1], r[0]) for r in rules]
+    initial_molecule = lines[-1]
+
+    queue = {'e'}
+    n = 0
+    while True:
+        print(n, len(queue))
+        n += 1
+        newq = set()
+        for i in queue:
+            for rule in [r for r in rules if r[0] in i]:
+                r0 = rule[0]
+                r1 = rule[1]
+                lr0 = len(rule[0])
+                lr1 = len(rule[1])
+                for ind in indexes(i, r0):
+                    new = i[:ind] + r1 + i[ind + lr0:]
+                    if new == initial_molecule:
+                        return time + 1
+                    if len(new) < len(initial_molecule):
+                        newq.add(new)
+        queue = newq
+
+    return 0
 
 
-SAMPLE = """
+SAMPLE = """e => H
+e => O
+H => HO
+H => OH
+O => HH
+HOHOHO
 """
-flag = 's'
+flag = 'i'
 if flag == 's':
     print(solve(SAMPLE))
 if flag == 'i':
