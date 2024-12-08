@@ -49,6 +49,8 @@ def solve(sample) -> int:
                     e = int(str(e) + str(values[i+1]))
                 else:
                     e += values[i+1]
+                if e > target:
+                    break
             if e == target:
                 output += target
                 break

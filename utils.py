@@ -58,7 +58,6 @@ class Grid:
         return sum([l.count(v) for l in self.grid])
     @staticmethod
     def vector_add(*vectors):
-        assert all([len(i) == len(vectors[0]) for i in vectors])
         return tuple([sum(i) for i in zip(*vectors)])
 # MARK: - list functions
 def list_diff(x):

@@ -31,8 +31,8 @@ partitions(n [size of total], k [number])
 """
 
 
-from re import X
-
+from re import *
+from math import *
 
 weapons = """
 Weapons:    Cost  Damage  Armor
@@ -59,30 +59,47 @@ Defense +1   20     0       1
 Defense +2   40     0       2
 Defense +3   80     0       3
 """
-weapons = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', weapons)]
-armor = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', armor)] + [(0,0,0)]
+weapons = [[int(i) for i in j] for j in re.findall(r'\s+(\d+)\s+(\d+)\s+(\d+)', weapons)]
+armor = [[int(i) for i in j] for j in re.findall(r'\s+(\d+)\s+(\d+)\s+(\d+)', armor)] + [[0,0,0]]
 
-rings = [[int(i) for i in j] for j in re.findall(r'(\d+)\s+(\d+)\s+(\d+)', rings)]
-rings = reduce(lambda a,b: a+b, [[(r, i) for r in rings if r != i] for i in rings], [])
-
-rings = [(int(a[0])+int(b[0]), int(a[1])+int(b[1]), int(a[2])+int(b[2])) for (a,b) in rings] + [(0,0,0)]
-
+rings = [[int(i) for i in j] for j in re.findall(r'\s+(\d+)\s+(\d+)\s+(\d+)', rings)] + [[0,0,0]]
+def wins(me, monster) -> bool: # cost, hitpoints, damage, armor
+    n = 0
+    while True:
+        if n % 2 == 0: # ATTACK DA MONSTER
+            monster[0] -= max(me[1]-monster[-1], 1)
+        else: # uh-oh
+            me[0] -= max(monster[1]-me[-1], 1)
+        if monster[0] <= 0:
+            return True
+        if me[0] <= 0:
+            return False
+        n += 1
+    """Hit Points: 103
+    Damage: 9
+    Armor: 2"""
 def solve(sample) -> int:
     output = 0
-    for ring in rings:
-        for a in armor:
-            for weapon in weapons:
-                print("!", end="")
+    best = 0
+    for option in itertools.product(rings, rings, weapons, armor):
+        if option[0] != option[1]:
+            me = list(Grid.vector_add(*option))
+            me = [me[0]] + [100] + me[1:]
+            print(me)
+            if not wins(me[1:], [103, 9, 2]):
+                cost = me[0]
+                if cost > best:
+                    print(me)
+                    best = cost
     # We need to ensure that:
         # my hit points/(9 - my armor)<=103/(my damage - 2)=t
     lines = regular_process(sample)
-
-    return output
+    return best
 
 
 SAMPLE = """
 """
-flag = 's'
+flag = 'i'
 if flag == 's':
     print(solve(SAMPLE))
 if flag == 'i':

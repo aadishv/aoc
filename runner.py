@@ -2,21 +2,7 @@
 import os
 import time
 from aocd.models import Puzzle
-import time
-import random
-import functools
-from functools import reduce
-import itertools
-import math
-import hashlib
-import json
-import re
-import typing
-from utils import *
 import argparse
-import traceback
-from copy import deepcopy
-import collections
 
 # argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')
