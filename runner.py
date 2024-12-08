@@ -3,6 +3,7 @@ import os
 import time
 from aocd.models import Puzzle
 import argparse
+import traceback
 
 # argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')

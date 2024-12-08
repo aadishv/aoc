@@ -28,45 +28,52 @@ reversed(iterator)
 reduced(function, iterator, initial)
 itertools.permutations(iterator)
 partitions(n [size of total], k [number])
-itertools.product([options...], repeat=times...) # get all permutations of a set of values repeated n times
 """
-
 from utils import *
-import itertools
 
 def solve(sample) -> int:
+
     output = 0
+    antennas = []
+    grid = Grid(sample, '', lambda x: x)
+    for i in grid.all_coordinates():
+        if grid.at(*i) not in ['.', '#']:
+            antennas.append((i, grid.at(*i)))
+    # go thru pairs of antennas with same freq
+    ta = []
+    for i in range(len(antennas)):
+        for j in range(i+1, len(antennas)):
+            if antennas[i][1] == antennas[j][1]:
+                # check if they're in the same line
+                if antennas[i][1] == antennas[j][1]:
+                    # antinodes
+                    difference = (antennas[i][0][0] - antennas[j][0][0], antennas[i][0][1] - antennas[j][0][1])
+                    antidifference = tuple([-1 * j for j in difference])
+                    for x in range(0, 100):
+                        newdiff = tuple([x * j for j in difference])
+                        newantidiff = tuple([x * j for j in antidifference])
+                        ta.append(Grid.vector_add(newdiff, antennas[i][0]))
+                        ta.append(Grid.vector_add(newantidiff, antennas[j][0]))
+    ta = [c for c in ta if c in grid.all_coordinates()]
+    for c in ta:
+        grid.set(*c, '#')
+    print('\n'.join([''.join(i) for i in grid.grid]))
+    print(len(grid.all_coordinates())-grid.count('.'))
+    return
 
-    lines = regular_process(sample)
-    for l in lines:
-        target = ints(l)[0]
-        values = ints(l)[1:]
-        for combo in itertools.product([0, 1, 2], repeat=len(values)-1):
-            e = values[0]
-            for i in range(len(combo)):
-                if combo[i] == 1:
-                    e *= values[i+1]
-                elif combo[i] == 2:
-                    e = int(str(e) + str(values[i+1]))
-                else:
-                    e += values[i+1]
-                if e > target:
-                    break
-            if e == target:
-                output += target
-                break
-    return output
 
-
-SAMPLE = """190: 10 19
-3267: 81 40 27
-83: 17 5
-156: 15 6
-7290: 6 8 6 15
-161011: 16 10 13
-192: 17 8 14
-21037: 9 7 18 13
-292: 11 6 16 20
+SAMPLE = """##....#....#
+.#.#....0...
+..#.#0....#.
+..##...0....
+....0....#..
+.#...#A....#
+...#..#.....
+#....#.#....
+..#.....A...
+....#....A..
+.#........#.
+...#......##
 """
 flag = 'i'
 if flag == 's':
