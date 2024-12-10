@@ -30,17 +30,44 @@ itertools.permutations(iterator)
 partitions(n [size of total], k [number])
 """
 from utils import *
+import itertools
+from copy import deepcopy
 
 def part1(sample) -> int:
+    grid = Grid(sample, '', lambda x: int(x) if x != '.' else -1)
+    score = 0
+    for trailhead in grid.all_coordinates():
+        if grid.at(trailhead) != 0:
+            continue
+        queue = [trailhead]
+        for i in range(1, 10):
+            newq = []
+            for c in queue:
+                for d in grid.CARDINAL_DIRECTIONS:
+                    newc = grid.vector_add(c, d)
+                    if not grid.in_bounds(newc):
+                        continue
+                    if grid.at(newc) == i:
+                        newq.append(newc)
+            queue = newq # replace with set(newq) to get part 1 answer
+        score += len(queue)
+    print(score)
 
-    return
-def part2(sample):
 
     return
 
 part = 1
 flag = 'i'
-SAMPLE = """2333133121414131402"""
+SAMPLE = """89010123
+78121874
+87430965
+96549874
+45678903
+32019012
+01329801
+10456732
+
+"""
 
 
 if flag == 's':

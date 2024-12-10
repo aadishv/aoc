@@ -32,17 +32,59 @@ partitions(n [size of total], k [number])
 from utils import *
 
 def part1(sample) -> int:
+    sample = list(sample.strip())
+    state = []
+    n = 0
+    while sample != []:
+        state += [n]*int(sample.pop(0))
+        if sample != []:
+            state += [-1]*int(sample.pop(0))
+        n += 1
 
-    return
+    for i in range(len(state)):
+        if state[i] == -1:
+            for j in reversed(range(i+1, len(state))):
+                if state[j] != -1:
+                    state[i], state[j] = state[j], state[i]
+                    break
+    print(sum([i*int(v) for i, v in enumerate(state) if v != -1]))
 def part2(sample):
+    print('sdgdfgdf')
+    sample = list(sample.strip())
+    state = []
+    n = 0
+    while sample != []:
+        state.append((n, int(sample.pop(0))))
+        if sample != []:
+            state.append((-1, int(sample.pop(0))))
+        n += 1
+    print("SDSFGDGH")
+    g = 0
+    move = reversed([j for i,j in enumerate(state) if j[0] != -1])
 
-    return
+    for block_to_move in move:
+        g += 1
+        print(g)
+        index_of_block_to_move = state.index(block_to_move)
+        block_replace = [(i, j) for i,j in enumerate(state) if j[0] == -1 and j[1] >= block_to_move[1] and i < index_of_block_to_move]
+        if block_replace == []:
+            continue
+        index_of_block_replace, block_replace = block_replace[0]
+        toadd = [block_to_move, (-1, block_replace[1]-block_to_move[1])]
+        state = state[:index_of_block_replace] + toadd + state[index_of_block_replace+1:]
+        state[index_of_block_to_move + len(toadd)-1] = (-1, block_to_move[1])
 
-part = 1
-flag = 'i'
+    c = 0
+    j = [[str(j[0]) if j[0] != -1 else '.'] * j[1] for j in state]
+    j = [item for sublist in j for item in sublist]
+    print(''.join(j))
+    print(sum([i*int(v) for i, v in enumerate(j) if v != '.']))
 SAMPLE = """2333133121414131402"""
-
-
+#00992111777.44.333....5555.6666.....8888..
+#00992111777.44.333....5555.6666.....8888..
+part = 2
+flag = 'i'
+solve = part1 if part == 1 else part2
 if flag == 's':
     if part == 2:
         part2(SAMPLE)

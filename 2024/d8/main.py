@@ -30,7 +30,7 @@ itertools.permutations(iterator)
 partitions(n [size of total], k [number])
 """
 from utils import *
-
+import itertools
 def solve(sample) -> int:
 
     output = 0
@@ -41,19 +41,14 @@ def solve(sample) -> int:
             antennas.append((i, grid.at(*i)))
     # go thru pairs of antennas with same freq
     ta = []
-    for i in range(len(antennas)):
-        for j in range(i+1, len(antennas)):
-            if antennas[i][1] == antennas[j][1]:
-                # check if they're in the same line
-                if antennas[i][1] == antennas[j][1]:
-                    # antinodes
-                    difference = (antennas[i][0][0] - antennas[j][0][0], antennas[i][0][1] - antennas[j][0][1])
-                    antidifference = tuple([-1 * j for j in difference])
-                    for x in range(0, 100):
-                        newdiff = tuple([x * j for j in difference])
-                        newantidiff = tuple([x * j for j in antidifference])
-                        ta.append(Grid.vector_add(newdiff, antennas[i][0]))
-                        ta.append(Grid.vector_add(newantidiff, antennas[j][0]))
+    for i, j in itertools.product(antennas, repeat=2):
+        if i[1] == j[1]:
+            # check if they're in the same line
+            if i[1] == j[1]:
+                # antinodes
+                difference = (i[0][0] - j[0][0], i[0][1] - j[0][1])
+                for x in range(-100, 100):
+                    ta.append(Grid.vector_add(Grid.vector_multiply(difference, x), i[0]))
     ta = [c for c in ta if c in grid.all_coordinates()]
     for c in ta:
         grid.set(*c, '#')
