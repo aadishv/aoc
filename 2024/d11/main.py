@@ -33,30 +33,29 @@ from utils import *
 from functools import lru_cache
 from collections import defaultdict
 
-def update_stone(s):
-    if s == 0:
-        return (1,)
-    ss = str(s)
-    if len(ss) % 2 == 0:
-        sh = len(ss)//2
-        return (int(ss[:sh]), int(ss[sh:]))
-    return (s*2024,)
-def dfs(mem, val, blinks):
-    if blinks == 0:
-        return 1
-    if (val, blinks) in mem:
-        return mem[(val, blinks)]
-    sub = update_stone(val)
-    tot = 0
-    for el in sub:
-        tot += dfs(mem, el, blinks-1)
-    mem[(val, blinks)] = tot
-    return tot
 def part1(sample) -> int:
-    mem = {}
     rocks = ints(sample)
-    tot = sum([dfs(mem, r, 75) for r in rocks])
-    print(tot)
+    dict = defaultdict(int)
+    for r in rocks:
+        dict[r] = 1
+    for i in range(75):
+        if i % 10 == 0:
+            print(i)
+        newdict = defaultdict(int)
+
+        for rock in dict:
+            count = dict[rock]
+            if rock == 0:
+                newdict[1] += count
+            elif len(str(rock)) % 2 == 0:
+                s = str(rock)
+                split = len(s) // 2
+                newdict[int(s[:split])] += count
+                newdict[int(s[split:])] += count
+            else:
+                newdict[rock*2024] += count
+        dict = newdict
+    print(sum([i for i in dict.values()]))
     return
 def part2(sample):
 
