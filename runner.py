@@ -24,6 +24,10 @@ args = parser.parse_args()
 DATE = (args.year, args.day)
 FILE_PATH = f'{args.year}/d{args.day}/'
 
+if not os.path.exists(FILE_PATH):
+    os.makedirs(FILE_PATH)
+    os.system('touch '+FILE_PATH+'main.py && cp template.py '+FILE_PATH+'main.py')
+
 tester = Tester(DATE, FILE_PATH)
 old_code = open(FILE_PATH+'main.py').read()
 code = old_code
@@ -38,7 +42,7 @@ while True:
         #print(e)
         traceback.print_exc()
     n = 0
-    while code == old_code and n < 10:
+    while code == old_code and n < 30:
         code = open(FILE_PATH+'main.py').read()
         time.sleep(0.1)
         n += 1

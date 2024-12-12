@@ -4,18 +4,19 @@ import sys
 from collections import Counter
 from functools import reduce
 from collections.abc import Iterator
+from copy import deepcopy
 
 sys.setrecursionlimit(10000)
 # MARK: - grid class
 class Grid:
     CARDINAL_DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
     DIAGONAL_DIRECTIONS = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
-    def __init__(self, string, delimiter, mapfn=lambda a: a, pad=False):
+    def __init__(self, string, delimiter='', mapfn=lambda a: a, pad=False):
         def delmsplit(s):
             if delimiter == '':
                 return list(s)
             return s.split(delimiter)
-        self.grid = [[mapfn(j) for j in delmsplit(i)] for i in [i for i in string.split('\n') if i != '']]
+        self.grid = [[mapfn(j) for j in delmsplit(i)] for i in string.strip().split('\n') if i != '']
         max_length = max([len(i) for i in self.grid])
         if pad:
             for i in range(len(self.grid)):
@@ -24,6 +25,8 @@ class Grid:
         self.height = len(self.grid)
     def window(self, x, y, width, height):
         return [[self.grid[j][i] for i in range(x, x+width)] for j in range(y, y+height)]
+    def coord_window(self, x, y, width, height):
+        return [[(i, j) for i in range(x, x+width)] for j in range(y, y+height)]
     def column(self, n):
         return [row[n] for row in self.grid]
     def row(self, n):
@@ -39,14 +42,17 @@ class Grid:
                 row_convo.append(self.window(x, y, width, height))
             returnv.append(row_convo)
         return returnv
-    def straight_neighbors(self, coord):
-        return [Grid.vector_add(coord, c) for c in CARDINAL_DIRECTIONS]
-    def diagonal_neighbors(self, coord):
-        return [Grid.vector_add(coord, c) for c in DIAGONAL_DIRECTIONS]
-    def neighbors(self, coord):
-        return [Grid.vector_add(coord, c) for c in CARDINAL_DIRECTIONS+DIAGONAL_DIRECTIONS]
+    def straight_neighbors(self, coord, restrict = True):
+        return [Grid.vector_add(coord, c) for c in self.CARDINAL_DIRECTIONS if (self.in_bounds(Grid.vector_add(coord, c)) or not restrict)]
+    def diagonal_neighbors(self, coord, restrict=True):
+        return [Grid.vector_add(coord, c) for c in self.DIAGONAL_DIRECTIONS if (self.in_bounds(Grid.vector_add(coord, c)) or not restrict)]
+    def neighbors(self, coord, restrict=True):
+        return [Grid.vector_add(coord, c) for c in self.CARDINAL_DIRECTIONS+self.DIAGONAL_DIRECTIONS if (self.in_bounds(Grid.vector_add(coord, c)) or not restrict)]
     def all_coordinates(self):
         return reduce(lambda a,b: a+b, [[(i, j) for i in range(self.width)] for j in range(self.height)], [])
+    @staticmethod
+    def get_all_coordinates(width, height):
+        return reduce(lambda a,b: a+b, [[(i, j) for i in range(width)] for j in range(height)], [])
     def at(self, coord):
         x, y = coord
         return self.grid[y][x]
@@ -58,6 +64,8 @@ class Grid:
             for x in range(self.width):
                 if cond(self.grid[y][x]):
                     return (x, y)
+    def values(self, coords):
+        return [self.at(coord) for coord in coords]
     def all_where(self, cond):
         o = []
         for y in range(self.height):
@@ -77,6 +85,8 @@ class Grid:
     def vector_subtract(vector1, vector2):
         return Grid.vector_add(vector1, Grid.vector_multiply(vector2, -1))
 # MARK: - list functions
+def product(list):
+    return reduce(lambda a, b: a*b, list)
 def list_diff(x):
     return [b-a for a, b in zip(x, x[1:])]
 def list_range(x):
@@ -87,6 +97,10 @@ def unique(l):
     return list(set(l))
 def flatten(l):
     return [item for sublist in l for item in sublist]
+def remove_empty(l):
+    return [i for i in l if i != []]
+def shared_elements(l1, l2):
+    return list(set(l1).intersection(set(l2)))
 # MARK: - misc
 def ints(s: str) -> typing.List[int]:
     return lmap(int, re.findall(r"-?\d+", s))  # thanks mserrano!

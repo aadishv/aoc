@@ -1,0 +1,242 @@
+[
+  {
+    "characters": "你",
+    "english": "you",
+    "lesson": 1,
+    "pinyin": "nǐ"
+  },
+  {
+    "characters": "好",
+    "english": "fine; good; nice; O.K.; it's settled",
+    "lesson": 1,
+    "pinyin": "hǎo"
+  },
+  {
+    "characters": "请",
+    "english": "please (polite form of request); to treat or to invite (somebody)",
+    "lesson": 1,
+    "pinyin": "qǐng"
+  },
+  {
+    "characters": "问",
+    "english": "to ask (a question)",
+    "lesson": 1,
+    "pinyin": "wèn"
+  },
+  {
+    "characters": "贵",
+    "english": "honorable; expensive",
+    "lesson": 1,
+    "pinyin": "guì"
+  },
+  {
+    "characters": "姓",
+    "english": "(one's) surname is...; to be surnamed; surname",
+    "lesson": 1,
+    "pinyin": "xìng"
+  },
+  {
+    "characters": "我",
+    "english": "I; me",
+    "lesson": 1,
+    "pinyin": "wǒ"
+  },
+  {
+    "characters": "呢",
+    "english": "(question particle)",
+    "lesson": 1,
+    "pinyin": "ne"
+  },
+  {
+    "characters": "小姐",
+    "english": "Miss; young lady",
+    "lesson": 1,
+    "pinyin": "xiǎojiě"
+  },
+  {
+    "characters": "叫",
+    "english": "to be called; to call",
+    "lesson": 1,
+    "pinyin": "jiào"
+  },
+  {
+    "characters": "什么",
+    "english": "what",
+    "lesson": 1,
+    "pinyin": "shénme"
+  },
+  {
+    "characters": "名字",
+    "english": "name",
+    "lesson": 1,
+    "pinyin": "míngzi"
+  },
+  {
+    "characters": "先生",
+    "english": "Mr.; husband; teacher",
+    "lesson": 1,
+    "pinyin": "xiānsheng"
+  },
+  {
+    "characters": "李友",
+    "english": "(a personal name)",
+    "lesson": 1,
+    "pinyin": "lǐ yǒu"
+  },
+  {
+    "characters": "李",
+    "english": "(a surname); plum",
+    "lesson": 1,
+    "pinyin": "lǐ"
+  },
+  {
+    "characters": "王朋",
+    "english": "(a personal name)",
+    "lesson": 1,
+    "pinyin": "wáng péng"
+  },
+  {
+    "characters": "王",
+    "english": "(a surname); king",
+    "lesson": 1,
+    "pinyin": "wáng"
+  },
+  {
+    "characters": "是",
+    "english": "to be",
+    "lesson": 1,
+    "pinyin": "shì"
+  },
+  {
+    "characters": "老师",
+    "english": "teacher",
+    "lesson": 1,
+    "pinyin": "lǎoshī"
+  },
+  {
+    "characters": "吗",
+    "english": "(question particle)",
+    "lesson": 1,
+    "pinyin": "ma"
+  },
+  {
+    "characters": "不",
+    "english": "not; no",
+    "lesson": 1,
+    "pinyin": "bù"
+  },
+  {
+    "characters": "学生",
+    "english": "student",
+    "lesson": 1,
+    "pinyin": "xuésheng"
+  },
+  {
+    "characters": "也",
+    "english": "too; also",
+    "lesson": 1,
+    "pinyin": "yě"
+  },
+  {
+    "characters": "人",
+    "english": "people; person",
+    "lesson": 1,
+    "pinyin": "rén"
+  },
+  {
+    "characters": "中国",
+    "english": "China",
+    "lesson": 1,
+    "pinyin": "zhōngguó"
+  },
+  {
+    "characters": "北京",
+    "english": "Beijing",
+    "lesson": 1,
+    "pinyin": "běijīng"
+  },
+  {
+    "characters": "美国",
+    "english": "America",
+    "lesson": 1,
+    "pinyin": "měiguó"
+  },
+  {
+    "characters": "纽约",
+    "english": "New York",
+    "lesson": 1,
+    "pinyin": "niǔyuē"
+  },
+  {
+    "characters": "英国",
+    "english": "Britain; England",
+    "lesson": 1,
+    "pinyin": "yīngguó"
+  },
+  {
+    "characters": "法国",
+    "english": "France",
+    "lesson": 1,
+    "pinyin": "făguó"
+  },
+  {
+    "characters": "德国",
+    "english": "Germany",
+    "lesson": 1,
+    "pinyin": "déguó"
+  },
+  {
+    "characters": "日本",
+    "english": "Japan",
+    "lesson": 1,
+    "pinyin": "rìběn"
+  },
+  {
+    "characters": "韩国",
+    "english": "South Korea",
+    "lesson": 1,
+    "pinyin": "hánguó"
+  },
+  {
+    "characters": "加拿大",
+    "english": "Canada",
+    "lesson": 1,
+    "pinyin": "jiānádà"
+  },
+  {
+    "characters": "墨西哥",
+    "english": "Mexico",
+    "lesson": 1,
+    "pinyin": "mòxīgē"
+  },
+  {
+    "characters": "印度",
+    "english": "India",
+    "lesson": 1,
+    "pinyin": "yìndù"
+  },
+  {
+    "characters": "越南",
+    "english": "Vietnam",
+    "lesson": 1,
+    "pinyin": "yuènán"
+  },
+  {
+    "characters": "加州",
+    "english": "California",
+    "lesson": 1,
+    "pinyin": "jiāzhōu"
+  },
+  {
+    "characters": "夏威夷",
+    "english": "Hawaii",
+    "lesson": 1,
+    "pinyin": "xiàwēiyí"
+  },
+  {
+    "characters": "上海",
+    "english": "Shanghai",
+    "lesson": 1,
+    "pinyin": "shànghǎi"
+  }
+]

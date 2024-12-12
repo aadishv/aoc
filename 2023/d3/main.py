@@ -31,9 +31,38 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
-
+import re
 def part1(sample) -> int:
-
+    total = 0
+    numbers = []
+    grid = Grid(sample)
+    running = False
+    # get numbers
+    for y in range(grid.height):
+        running = False
+        for x in range(grid.width):
+            try:
+                n = int(grid.grid[y][x])
+                if running:
+                    numbers[-1] = [numbers[-1][0] + [(x, y)], numbers[-1][1] + grid.grid[y][x]]
+                else:
+                    running = True
+                    numbers.append([[(x, y)], grid.grid[y][x]])
+            except:
+                running = False
+                continue
+    # get actual numbers
+    for gear in grid.all_where(lambda x: x == '*'):
+        matching = []
+        for n in numbers:
+            for c in n[0]:
+                if gear in grid.neighbors(c):
+                    matching.append(n[1])
+                    break
+        print(matching)
+        if len(matching) > 1:
+            total += product([int(i) for i in matching])
+    print(total)
     return
 def part2(sample):
 
@@ -41,7 +70,17 @@ def part2(sample):
 
 part = 1
 flag = 's'
-SAMPLE = """"""
+SAMPLE = """467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..
+"""
 
 
 if flag == 's':

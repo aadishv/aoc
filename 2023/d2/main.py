@@ -31,17 +31,56 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
-
+import re
 def part1(sample) -> int:
+    total = 0
+    numbers = []
+    grid = Grid(sample)
+    running = False
+    # get numbers
+    for y in range(grid.height):
+        running = False
+        for x in range(grid.width):
+            try:
+                n = int(grid.grid[y][x])
+                if running:
+                    numbers[-1] = [numbers[-1][0] + [(x, y)], numbers[-1][1] + grid.grid[y][x]]
+                else:
+                    running = True
+                    numbers.append([[(x, y)], grid.grid[y][x]])
+            except:
+                running = False
+                continue
+    # get actual numbers
 
+    for n in numbers:
+        g = False
+        for coord in n[0]:
+            if not g:
+                for s in grid.values(grid.neighbors(coord)):
+                    if s != '.' and not s.isnumeric():
+                        g = True
+                        break
+        if g:
+            total += int(n[1])
     return
 def part2(sample):
 
     return
 
 part = 1
-flag = 's'
-SAMPLE = """"""
+flag = 'i'
+SAMPLE = """467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..
+"""
 
 
 if flag == 's':

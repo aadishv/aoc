@@ -39,6 +39,7 @@ def part1(sample) -> int:
     for r in rocks:
         dict[r] = 1
     for i in range(75):
+        print(len(dict))
         if i % 10 == 0:
             print(i)
         newdict = defaultdict(int)

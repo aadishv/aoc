@@ -32,16 +32,62 @@ partitions(n [size of total], k [number])
 from utils import *
 from copy import deepcopy
 
+numbers = {
+    'one': 1,
+    'two': 2,
+    'three': 3,
+    'four': 4,
+    'five': 5,
+    'six': 6,
+    'seven': 7,
+    'eight': 8,
+    'nine': 9
+}
 def part1(sample) -> int:
-
-    return
+    total = 0
+    for line in regular_process(sample):
+        l1 = deepcopy(line)
+        n1 = -1
+        n2 = -1
+        # get first number
+        while n1 == -1:
+            try:
+                n1 = int(l1[0])
+            except:
+                for k, v in numbers.items():
+                    if l1.startswith(k):
+                        n1 = v
+                        break
+                if n1 == -1:
+                    l1 = l1[1:]
+        # get second number
+        l1 = deepcopy(line)
+        while n2 == -1:
+            try:
+                n2 = int(l1[-1])
+            except:
+                for k, v in numbers.items():
+                    if l1.endswith(k):
+                        n2 = v
+                        break
+                if n2 == -1:
+                    l1 = l1[:-1]
+        total += int(str(n1) + str(n2))
+    print(total)
 def part2(sample):
 
     return
 
 part = 1
-flag = 's'
-SAMPLE = """"""
+flag = 'i'
+SAMPLE = """two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
+"""
 
 
 if flag == 's':
