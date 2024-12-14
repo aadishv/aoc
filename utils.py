@@ -7,11 +7,15 @@ from collections.abc import Iterator
 from copy import deepcopy
 
 sys.setrecursionlimit(10000)
+c="""fff
+fff
+fff"""
 # MARK: - grid class
 class Grid:
     CARDINAL_DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
     DIAGONAL_DIRECTIONS = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
-    def __init__(self, string, delimiter='', mapfn=lambda a: a, pad=False):
+
+    def __init__(self, string, delimiter='', mapfn=lambda a: a, pad=False, sss=False):
         def delmsplit(s):
             if delimiter == '':
                 return list(s)
@@ -23,6 +27,13 @@ class Grid:
                 self.grid[i] += [None]*(max_length-len(self.grid[i]))
         self.width = max_length
         self.height = len(self.grid)
+    # init from the grid data
+    def from_grid(gr):
+        g = Grid(c)
+        g.grid = deepcopy(gr)
+        g.width = len(gr[0])
+        g.height = len(gr)
+        return g
     def window(self, x, y, width, height):
         return [[self.grid[j][i] for i in range(x, x+width)] for j in range(y, y+height)]
     def coord_window(self, x, y, width, height):

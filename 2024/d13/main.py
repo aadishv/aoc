@@ -32,6 +32,20 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+"""
+Derivation!
+m*ax+n*bx=tx
+m*ay+n*by=ty
+n*by = ty-m*ay
+n=(ty-m*ay)/by
+m*ax+((ty-m*ay)/by)*bx=tx
+m*ax+(ty-m*ay)*bx/by = tx
+m*ax+ty*bx/by-m*ay*bx/by = tx
+m*ax-m*ay*bx/by+ty*bx/by = tx
+m*(ax-ay*bx/by)=(tx-ty*bx/by)
+m=(tx-ty*bx/by)/(ax-ay*bx/by)
+m=(tx*by-ty*bx)/(ax*by-ay*bx)
+"""
 def part1(sample):
     total = 0
     machines = [ints(i) for i in sample.split('\n\n')]

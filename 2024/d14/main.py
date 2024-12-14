@@ -31,17 +31,67 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+from collections import defaultdict
 
 def part1(sample):
-
+    w = 101
+    h = 103
+    robots = []
+    for l in regular_process(sample):
+        px, py, vx, vy = ints(l)
+        for i in range(100):
+            px += vx
+            py += vy
+            # wrap around - width is 101, height is 103
+            px = (px + w*2)%w
+            py = (py + h*2)%h
+        robots.append((px, py))
+    quadrants = defaultdict(list)
+    for robot in robots:
+        ww = False if robot[0] < w/2-1 else True if robot[0] > w/2 else None
+        hh = False if robot[1] < h/2-1 else True if robot[1] > h/2 else None
+        quadrants[(ww, hh)].append(robot)
+    keys = [(True, True), (True, False), (False, True), (False, False)]
     return
 def part2(sample):
-
+    w = 101
+    h = 103
+    txt = ''
+    robots = []
+    for l in regular_process(sample):
+        ls = []
+        px, py, vx, vy = ints(l)
+        for i in range(10000):
+            px += vx
+            py += vy
+            # wrap around - width is 101, height is 103
+            px = (px + w*2)%w
+            py = (py + h*2)%h
+            ls.append((px, py))
+        robots.append(ls)
+    for i in range(10000):
+        rs = [robot[i] for robot in robots]
+        if len(rs) == len(set(rs)):
+            r = [['.' if (x, y) not in rs else '*' for x in range(w)] for y in range(h)]
+            print('\n'.join([''.join(i) for i in r]))
+    open('output.txt', 'w').write(txt)
     return
 
-part = 1
-flag = 's'
-SAMPLE = """"""
+
+part = 2
+flag = 'i'
+SAMPLE = """p=0,4 v=3,-3
+p=6,3 v=-1,-3
+p=10,3 v=-1,2
+p=2,0 v=2,-1
+p=0,0 v=1,3
+p=3,0 v=-2,-2
+p=7,6 v=-1,-3
+p=3,0 v=-1,-2
+p=9,3 v=2,3
+p=7,3 v=-1,2
+p=2,4 v=2,-3
+p=9,5 v=-3,-3"""
 
 
 if flag == 's':
@@ -54,3 +104,4 @@ if flag == 'i':
         part2(tester.INPUT)
     else:
         part1(tester.INPUT)
+exit()
