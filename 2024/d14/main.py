@@ -32,7 +32,7 @@ partitions(n [size of total], k [number])
 from utils import *
 from copy import deepcopy
 from collections import defaultdict
-
+from itertools import groupby
 def part1(sample):
     w = 101
     h = 103
@@ -69,12 +69,17 @@ def part2(sample):
             py = (py + h*2)%h
             ls.append((px, py))
         robots.append(ls)
+    record = []
     for i in range(10000):
+        print(i)
         rs = [robot[i] for robot in robots]
-        if len(rs) == len(set(rs)):
-            r = [['.' if (x, y) not in rs else '*' for x in range(w)] for y in range(h)]
+        best = 0
+        rs = [robot[i] for robot in robots]
+        r = [''.join(['. ' if (x, y) not in rs else '* ' for x in range(w)]) for y in range(h)]
+        dups = max([max([sum(1 for _ in group) for _, group in groupby(list1)]) for list1 in r])
+        if dups > 4:
             print('\n'.join([''.join(i) for i in r]))
-    open('output.txt', 'w').write(txt)
+            exit()
     return
 
 
