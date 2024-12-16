@@ -31,17 +31,34 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+from functools import cmp_to_key
 
 def part1(sample):
-    split = sample.strip().split('\n\n')
-    seeds = [range(l[0], l[0]+l[1]) for l in list_split(ints(split[0]), 2)]
-    for map in split[1:2]:
-        map = [ints(i) for i in map.split('\n') if ints(i) != []]
-        for seed in seeds: # update each group by "adding" needed offsets
-            for source, dest, length in reversed(map):
-                if
-    maps = []
-
+    def rank(a):
+        cons = sorted(length_consecutive(sorted(a)))
+        if cons == [5]: # five of a kind
+            return 1
+        elif cons == [1, 4]: # four of a kind
+            return 2
+        elif cons == [2, 3]: # full houes
+            return 2.5
+        elif cons == [1, 1, 3]: # three of a kind
+            return 3
+        elif cons == [1, 2, 2]: # two pairs
+           return 4
+        elif cons == [1, 1, 1, 2]: # one pair
+           return 5
+        elif cons == [1]*5: # high card
+           return 6
+        print(a, cons)
+    decks = [(i.split()[0], int(i.split()[1])) for i in sample.split('\n') if i != '']
+    values = [(d, 6-rank(d[0])) for d in decks]
+    values = sorted(
+        runs(values, lambda l: len(unique([i[-1] for i in l])) == 1),
+        key=lambda v: v[-1][-1]
+    )
+    for run in values:
+        print(run)
     return
 def part2(sample):
 
@@ -49,39 +66,11 @@ def part2(sample):
 
 part = 1
 flag = 's'
-SAMPLE = """seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4
+SAMPLE = """32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483
 """
 
 

@@ -31,59 +31,83 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+from collections import deque
 
 def part1(sample):
-    split = sample.strip().split('\n\n')
-    seeds = [range(l[0], l[0]+l[1]) for l in list_split(ints(split[0]), 2)]
-    for map in split[1:2]:
-        map = [ints(i) for i in map.split('\n') if ints(i) != []]
-        for seed in seeds: # update each group by "adding" needed offsets
-            for source, dest, length in reversed(map):
-                if
-    maps = []
+    grid = Grid.from_string(sample)
+    start = grid.index('S')
+    end = grid.index('E')
+    queue = deque([(start, V(1, 0), 0, [start])])  # pos, dir, score, points
+    visited = {}
 
-    return
-def part2(sample):
+    final = []
+    while queue:
+        print(len(queue))
+        pos, dir, score, points = queue.popleft()
 
-    return
+        if pos == end:
+            final.append((score, points))
+            continue
+        if (pos, dir) in visited and visited[(pos, dir)] < score:
+            continue
+        else:
+            visited[(pos, dir)] = score
+
+        for d in V.CARDINAL_DIRECTIONS:
+            # Check if it's a turn (vectors are perpendicular)
+            is_turn = (dir[0] * d[0] + dir[1] * d[1]) == 0 and d != dir
+            diff = 1000 if is_turn else 0
+
+            new_pos = pos + d
+            if new_pos not in grid:
+                continue
+            if grid[new_pos] in '.E':
+                queue.append((new_pos, d, score + diff + 1, points + [new_pos]))
+    m = min(final, key=lambda x: x[0])[0]
+    points = flatten([i[1] for i in final if i[0] == m])
+    for p in points:
+        grid[p] = 'O'
+    print('Part 1:', m)
+    print('Part 2:', len(set(points)))
+    exit()
 
 part = 1
-flag = 's'
-SAMPLE = """seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4
+flag = 'i'
+SAMPLE = """###############
+#.......#....E#
+#.#.###.#.###.#
+#.....#.#...#.#
+#.###.#####.#.#
+#.#.#.......#.#
+#.#.#####.###.#
+#...........#.#
+###.#.#####.#.#
+#...#.....#.#.#
+#.#.#.###.#.#.#
+#.....#...#.#.#
+#.###.#.#.#.#.#
+#S..#.....#...#
+###############
 """
 
+"""#################
+#...#...#...#..E#
+#.#.#.#.#.#.#.#.#
+#.#.#.#...#...#.#
+#.#.#.#.###.#.#.#
+#...#.#.#.....#.#
+#.#.#.#.#.#####.#
+#.#...#.#.#.....#
+#.#.#####.#.###.#
+#.#.#.......#...#
+#.#.###.#####.###
+#.#.#...#.....#.#
+#.#.#.#####.###.#
+#.#.#.........#.#
+#.#.#.#########.#
+#S#.............#
+#################
+"""
 
 if flag == 's':
     if part == 2:

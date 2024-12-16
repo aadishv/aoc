@@ -33,55 +33,29 @@ from utils import *
 from copy import deepcopy
 
 def part1(sample):
-    split = sample.strip().split('\n\n')
-    seeds = [range(l[0], l[0]+l[1]) for l in list_split(ints(split[0]), 2)]
-    for map in split[1:2]:
-        map = [ints(i) for i in map.split('\n') if ints(i) != []]
-        for seed in seeds: # update each group by "adding" needed offsets
-            for source, dest, length in reversed(map):
-                if
-    maps = []
-
+    total = 1
+    for time, distance in zip(*(ints(remove_char(i)) for i in regular_process(sample))):
+        print(time, distance)
+        started = False
+        n = 0
+        for hold in range(1, time+1): # 1-time inclusive
+            traveled = (time-hold)*hold
+            if traveled > distance:
+                n += 1
+            else:
+                if n > 0:
+                    break
+        total *= n
+    print(total)
     return
 def part2(sample):
 
     return
 
 part = 1
-flag = 's'
-SAMPLE = """seeds: 79 14 55 13
-
-seed-to-soil map:
-50 98 2
-52 50 48
-
-soil-to-fertilizer map:
-0 15 37
-37 52 2
-39 0 15
-
-fertilizer-to-water map:
-49 53 8
-0 11 42
-42 0 7
-57 7 4
-
-water-to-light map:
-88 18 7
-18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4
+flag = 'i'
+SAMPLE = """Time:      7  15   30
+Distance:  9  40  200
 """
 
 
