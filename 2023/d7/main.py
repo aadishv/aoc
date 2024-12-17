@@ -52,9 +52,9 @@ def part1(sample):
            return 6
         print(a, cons)
     decks = [(i.split()[0], int(i.split()[1])) for i in sample.split('\n') if i != '']
-    values = [(d, 6-rank(d[0])) for d in decks]
+    values = sorted([(d, 6-rank(d[0])) for d in decks], key=lambda v: v[1])
     values = sorted(
-        runs(values, lambda l: len(unique([i[-1] for i in l])) == 1),
+        runs(values, lambda l: all([i[-1] == l[0][-1] for i in l])),
         key=lambda v: v[-1][-1]
     )
     for run in values:

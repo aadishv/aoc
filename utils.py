@@ -140,6 +140,19 @@ def shared_elements(l1: list, l2: list) -> list:  # Get common elements
 def distance_elements_loop(e1, e2, l):
     standard_distance = abs(l.index(e1) - l.index(e2))
     return min(standard_distance, len(l) - standard_distance)
+def shared_prefix(*lists):
+    """Find the shared prefix of a list of lists."""
+    if not lists:
+        return []
+
+    # Find the shortest list
+    shortest_list = min(lists, key=len)
+
+    for i, element in enumerate(shortest_list):
+        if not all(lst[i] == element for lst in lists):
+            return shortest_list[:i]
+
+    return shortest_list
 # MARK: - misc
 def reduced_product(l: list) -> int:  # Multiply elements with reduce
     return reduce(lambda a, b: a*b, l)
