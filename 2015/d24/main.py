@@ -31,52 +31,61 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+import itertools
 
-def test_a(ma, mb, mc, program):
-    a, b, c = deepcopy(ma), deepcopy(mb), deepcopy(mc)
-    output = []
-    while a != 0:
-        # b is not dependent on previous iterations
-        # thus the "ticker" is just a getting divided by 8
-        b = (a & 7) ^ 2
-        b = (b ^ (a//(1 << b))) ^ 3
-        a = a >> 3
-        output.append(b%8)
-    return output
+def get_all_target(pckgs, t):
+    queue = [[i] for i in deepcopy(pckgs)]
+    final = []
+    while queue != []:
+        print('getting', len(queue), min(map(len, queue)), max(map(len, queue)), final, t)
+        pckg = queue.pop(0)
+
+        for n in list_subtract(pckgs, pckg):
+            new = pckg + [n]
+            news = sum(new)
+            if news < t:
+                queue.append(new)
+            elif news == t:
+                final.append(new)
+    return final
+
 def part1(sample):
-    registers, program = sample.split('\n\n')
-    a, b, c = ints(registers)
-    program = ints(program)
-
-    print(test_a(a, b, c, program))
+    packages = ints(sample)
+    weight = sum(packages)//3
+    options = set()
+    l = len(packages)
+    r = get_all_target(packages, weight)
+    f_l = min(map(len, r))
+    best = (None, [])
+    n = 0
+    for a, b in itertools.product(r, repeat=2):
+        print(n)
+        n += 1
+        if unique(a+b) == a+b and len(a) == f_l:
+            qe = product(a)
+            if best[0] == None or qe < best[0]:
+                best = (qe, a)
+            # c = list(list_subtract(packages, a+b))
+            # t = tuple(map(tuple, [a, b, c]))
+            # options.add(t)
+    print(qe)
     return
-
 def part2(sample):
-    registers, program = sample.split('\n\n')
-    program = ints(program)
 
-    mya = 1 # maximum that has length 16
-    matching = -1
-
-    while matching != -16:
-        output = test_a(mya, 0, 0, program)
-        if output[matching:] == program[matching:]:
-            print(mya, output)
-            mya *= 8
-            matching -= 1
-        mya += 1
-    print(mya, test_a(mya, 0, 0, program) == program, matching)
-    time.sleep(2)
     return
 
-part = 2
+part = 1
 flag = 'i'
-SAMPLE = """Register A: 117440
-Register B: 0
-Register C: 0
-
-Program: 0,3,5,4,3,0
-"""
+SAMPLE = """"1
+2
+3
+4
+5
+7
+8
+9
+10
+11"""
 
 
 if flag == 's':

@@ -32,51 +32,52 @@ partitions(n [size of total], k [number])
 from utils import *
 from copy import deepcopy
 
-def test_a(ma, mb, mc, program):
-    a, b, c = deepcopy(ma), deepcopy(mb), deepcopy(mc)
-    output = []
-    while a != 0:
-        # b is not dependent on previous iterations
-        # thus the "ticker" is just a getting divided by 8
-        b = (a & 7) ^ 2
-        b = (b ^ (a//(1 << b))) ^ 3
-        a = a >> 3
-        output.append(b%8)
-    return output
 def part1(sample):
-    registers, program = sample.split('\n\n')
-    a, b, c = ints(registers)
-    program = ints(program)
-
-    print(test_a(a, b, c, program))
+    instructions = regular_process(sample)
+    registers = {'a': 1, 'b': 0}
+    i = 0
+    while i < len(instructions):
+        instr = instructions[i]
+        r = split_mult(instr, ' ,')[1]
+        if instr == 'jmp -7':
+            print('fffff')
+        moved = False
+        match instr[:3]:
+            case 'hlf':
+                registers[r] = int(0.5 * registers[r])
+            case 'tpl':
+                registers[r] = 3 * registers[r]
+            case 'inc':
+                registers[r] += 1
+            case 'jmp':
+                i += int(r)
+                moved = True
+            case 'jie':
+                if registers[r] % 2 == 0:
+                    i += int(split_mult(instr, ' ,')[2])
+                    moved = True
+            case 'jio':
+                if instr == "jio a, +8":
+                    print(registers)
+                if registers[r] == 1:
+                    i += int(split_mult(instr, ' ,')[2])
+                    moved = True
+        if not moved:
+            i += 1
+        print(i)
+    print(registers)
     return
-
 def part2(sample):
-    registers, program = sample.split('\n\n')
-    program = ints(program)
 
-    mya = 1 # maximum that has length 16
-    matching = -1
-
-    while matching != -16:
-        output = test_a(mya, 0, 0, program)
-        if output[matching:] == program[matching:]:
-            print(mya, output)
-            mya *= 8
-            matching -= 1
-        mya += 1
-    print(mya, test_a(mya, 0, 0, program) == program, matching)
-    time.sleep(2)
     return
 
-part = 2
-flag = 'i'
-SAMPLE = """Register A: 117440
-Register B: 0
-Register C: 0
 
-Program: 0,3,5,4,3,0
-"""
+part = 1
+flag = 'i'
+SAMPLE = """inc a
+jio a, +2
+tpl a
+inc a"""
 
 
 if flag == 's':

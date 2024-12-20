@@ -1,11 +1,10 @@
-# many of these imports are unused but may(?) be used by a solution, which executes in the same context as this file
+from utils import *
 import os
 import time
 from aocd.models import Puzzle
 import argparse
 import traceback
 
-# argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')
 parser.add_argument('year', type=int,
                     help='Year of the solution')
@@ -30,25 +29,3 @@ if not os.path.exists(FILE_PATH):
 tester = Tester(DATE, FILE_PATH)
 if not os.path.exists(FILE_PATH+'input.txt'):
     open(FILE_PATH+'input.txt', 'w').write(tester.INPUT)
-
-old_code = open(FILE_PATH+'main.py').read()
-code = old_code
-
-while True:
-    old_code = code
-    os.system('clear')
-    print('#'*50)
-    try:
-        exec(code)
-    except Exception as e:
-        #print(e)
-        traceback.print_exc()
-    n = 0
-    while code == old_code and n < 30:
-        code = open(FILE_PATH+'main.py').read()
-        time.sleep(0.1)
-        n += 1
-"""Run the following before you commit to avoid any copyright issues (removing puzzle input):
-find . -name "*.txt" -type f -delete
-"""
-# Cheers!

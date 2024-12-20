@@ -32,40 +32,91 @@ partitions(n [size of total], k [number])
 from utils import *
 from copy import deepcopy
 from functools import cmp_to_key
+import math
+import itertools
 
 def part1(sample):
     def rank(a):
+        # stronger = higher rank
+        # figure out the other rank
+        vals = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
+        print(len(vals))
+        orank = [vals.index(i) for i in a]
+
         cons = sorted(length_consecutive(sorted(a)))
+
+        value = 0
         if cons == [5]: # five of a kind
-            return 1
+            value = 1
         elif cons == [1, 4]: # four of a kind
-            return 2
+            value = 2
         elif cons == [2, 3]: # full houes
-            return 2.5
+            value = 2.5
         elif cons == [1, 1, 3]: # three of a kind
-            return 3
+            value = 3
         elif cons == [1, 2, 2]: # two pairs
-           return 4
+            value = 4
         elif cons == [1, 1, 1, 2]: # one pair
-           return 5
+            value = 5
         elif cons == [1]*5: # high card
-           return 6
-        print(a, cons)
+            value = 6
+        return [value]+orank
     decks = [(i.split()[0], int(i.split()[1])) for i in sample.split('\n') if i != '']
-    values = sorted([(d, 6-rank(d[0])) for d in decks], key=lambda v: v[1])
-    values = sorted(
-        runs(values, lambda l: all([i[-1] == l[0][-1] for i in l])),
-        key=lambda v: v[-1][-1]
-    )
-    for run in values:
-        print(run)
+    decks = list(reversed(sorted(decks, key=lambda i: rank(i[0]))))
+    decks = sum([v[1]*(i+1) for i, v in enumerate(decks)])
+    print(decks)
+    # bitshift 4 each time
     return
 def part2(sample):
+    def rank_given_cons(cons):
+        value = 0
+        if cons == [5]: # five of a kind
+            value = 1
+        elif cons == [1, 4]: # four of a kind
+            value = 2
+        elif cons == [2, 3]: # full houes
+            value = 2.5
+        elif cons == [1, 1, 3]: # three of a kind
+            value = 3
+        elif cons == [1, 2, 2]: # two pairs
+            value = 4
+        elif cons == [1, 1, 1, 2]: # one pair
+            value = 5
+        elif cons == [1]*5: # high card
+            value = 6
+        return value
+    def rank(a):
+        # stronger = higher rank
+        # figure out the other rank
+        vals = ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J']
 
+        orank = [vals.index(i) for i in a]
+
+        cons = sorted(a)
+        js = cons.count('J')
+        if js == 0:
+            return [rank_given_cons(sorted(length_consecutive(cons)))]+orank
+        cons = [i for i in cons if i != 'J']
+        best_hand_rank = 6
+        for i in itertools.product([i for i in vals if i != 'J'], repeat = js):
+            mycons = sorted(cons+list(i))
+            rank = rank_given_cons(sorted(length_consecutive(mycons)))
+            if rank < best_hand_rank:
+                best_hand_rank = rank
+
+        value = 0
+        print(a, best_hand_rank)
+        return [best_hand_rank]+orank
+    decks = [(i.split()[0], int(i.split()[1])) for i in sample.split('\n') if i != '']
+    decks = list(reversed(sorted(decks, key=lambda i: rank(i[0]))))
+    print(decks)
+    decks = sum([v[1]*(i+1) for i, v in enumerate(decks)])
+    print(decks)
+    # bitshift 4 each time
     return
 
-part = 1
-flag = 's'
+part = 2
+flag = 'i'
 SAMPLE = """32T3K 765
 T55J5 684
 KK677 28

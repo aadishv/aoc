@@ -31,52 +31,67 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+import networkx as nx
 
-def test_a(ma, mb, mc, program):
-    a, b, c = deepcopy(ma), deepcopy(mb), deepcopy(mc)
-    output = []
-    while a != 0:
-        # b is not dependent on previous iterations
-        # thus the "ticker" is just a getting divided by 8
-        b = (a & 7) ^ 2
-        b = (b ^ (a//(1 << b))) ^ 3
-        a = a >> 3
-        output.append(b%8)
-    return output
 def part1(sample):
-    registers, program = sample.split('\n\n')
-    a, b, c = ints(registers)
-    program = ints(program)
+    coords = [V(*ints(i)) for i in sample.split('\n')]
+    grid = grid_from_dimensions(71, 71, '.')
+    for i in coords[:1024]:
+        grid[i] = '#'
+    def calculate_path(g):
+        # Create graph
+        G = nx.Graph()
 
-    print(test_a(a, b, c, program))
-    return
-
+        # Add edges between adjacent open spaces
+        for c in grid.all_coordinates():
+            if grid[c] == '.':
+                for n in c.straight_neighbors():
+                    if grid[n] == '.':
+                        G.add_edge(c, n)
+        try:
+            return nx.shortest_path(G, (0,0), (70,70))
+        except:
+            return None
+    # Find shortest path
+    n = 0
+    for p in coords[1024:]:
+        n += 1
+        print(n)
+        grid[p] = '#'
+        if calculate_path(grid) == None:
+            print(p)
+            break
 def part2(sample):
-    registers, program = sample.split('\n\n')
-    program = ints(program)
 
-    mya = 1 # maximum that has length 16
-    matching = -1
-
-    while matching != -16:
-        output = test_a(mya, 0, 0, program)
-        if output[matching:] == program[matching:]:
-            print(mya, output)
-            mya *= 8
-            matching -= 1
-        mya += 1
-    print(mya, test_a(mya, 0, 0, program) == program, matching)
-    time.sleep(2)
     return
 
-part = 2
+part = 1
 flag = 'i'
-SAMPLE = """Register A: 117440
-Register B: 0
-Register C: 0
-
-Program: 0,3,5,4,3,0
-"""
+SAMPLE = """5,4
+4,2
+4,5
+3,0
+2,1
+6,3
+2,4
+1,5
+0,6
+3,3
+2,6
+5,1
+1,2
+5,5
+2,5
+6,5
+1,4
+0,4
+6,4
+1,1
+6,1
+1,0
+0,5
+1,6
+2,0"""
 
 
 if flag == 's':

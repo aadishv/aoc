@@ -31,52 +31,60 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+def list_list_unique(l):
+    return list(map(list, set(map(tuple, l))))
+def list_string_sum(l):
+    return reduce(lambda x, y: x + y, l)
+def check(target, patterns):
+    dp = [True] + [False] * len(target)
 
-def test_a(ma, mb, mc, program):
-    a, b, c = deepcopy(ma), deepcopy(mb), deepcopy(mc)
-    output = []
-    while a != 0:
-        # b is not dependent on previous iterations
-        # thus the "ticker" is just a getting divided by 8
-        b = (a & 7) ^ 2
-        b = (b ^ (a//(1 << b))) ^ 3
-        a = a >> 3
-        output.append(b%8)
-    return output
+    for i in range(len(target) + 1):
+        if not dp[i]:
+            continue
+        for pattern in patterns:
+            if i + len(pattern) <= len(target) and target[i:i+len(pattern)] == pattern:
+                dp[i + len(pattern)] = True
+
+    return dp[-1]
+
 def part1(sample):
-    registers, program = sample.split('\n\n')
-    a, b, c = ints(registers)
-    program = ints(program)
-
-    print(test_a(a, b, c, program))
+    patterns, targets = sample.split('\n\n')
+    patterns = patterns.split(', ')
+    targets = regular_process(targets)
+    total = sum([check(i, patterns) for i in targets])
+    print(total)
     return
 
+def check2(target, patterns):
+    dp = [1] + [0] * len(target)
+
+    for i in range(len(target) + 1):
+        if not dp[i]:
+            continue
+        for pattern in patterns:
+            if i + len(pattern) <= len(target) and target[i:i+len(pattern)] == pattern:
+                dp[i + len(pattern)] += dp[i]
+
+    return dp[-1]
 def part2(sample):
-    registers, program = sample.split('\n\n')
-    program = ints(program)
-
-    mya = 1 # maximum that has length 16
-    matching = -1
-
-    while matching != -16:
-        output = test_a(mya, 0, 0, program)
-        if output[matching:] == program[matching:]:
-            print(mya, output)
-            mya *= 8
-            matching -= 1
-        mya += 1
-    print(mya, test_a(mya, 0, 0, program) == program, matching)
-    time.sleep(2)
+    patterns, targets = sample.split('\n\n')
+    patterns = patterns.split(', ')
+    targets = regular_process(targets)
+    print(sum([check2(t, patterns) for t in targets]))
     return
 
 part = 2
 flag = 'i'
-SAMPLE = """Register A: 117440
-Register B: 0
-Register C: 0
+SAMPLE = """r, wr, b, g, bwu, rb, gb, br
 
-Program: 0,3,5,4,3,0
-"""
+brwrr
+bggr
+gbbr
+rrbgbr
+ubwu
+bwurrg
+brgr
+bbrgwb"""
 
 
 if flag == 's':

@@ -10,7 +10,9 @@ sys.setrecursionlimit(10000)
 
 # MARK: - vector class
 class V(tuple):
-    def __new__(cls, x: int, y: int) -> 'V':  # Create new vector
+    def __new__(cls, x: typing.Union[int, tuple], y: typing.Optional[int] = None) -> 'V':  # Create new vector
+        if isinstance(x, tuple):
+            return super().__new__(cls, x)
         return super().__new__(cls, (x, y))
 
     @property
@@ -41,10 +43,10 @@ class V(tuple):
     def window(self, width: int, height: int) -> list:  # Get window of coordinates
         return [[(i, j) for i in range(self.x, self.x+width)] for j in range(self.y, self.y+height)]
 
-    def straight_neighbors(self, coord: tuple, restrict: bool = True) -> list:  # Get cardinal neighbors
-        return [coord+c for c in self.CARDINAL_DIRECTIONS]
-    def diagonal_neighbors(self, coord: tuple, restrict: bool = True) -> list:  # Get diagonal neighbors
-        return [coord+c for c in self.DIAGONAL_DIRECTIONS]
+    def straight_neighbors(self) -> list:  # Get cardinal neighbors
+        return [self+c for c in self.CARDINAL_DIRECTIONS]
+    def diagonal_neighbors(self) -> list:  # Get diagonal neighbors
+        return [self+c for c in self.DIAGONAL_DIRECTIONS]
     def neighbors(self, coord: tuple, restrict: bool = True) -> list:  # Get all neighbors
         return self.straight_neighbors(coord, restrict) + self.diagonal_neighbors(coord, restrict)
 # MARK: - grid class
@@ -59,22 +61,9 @@ class Grid(dict[V, typing.Any]):
     def height(self) -> int:  # Height of grid
         return max([i[0] for i in self.keys()])
 
-
-    @classmethod
-    def from_string(cls, string: str, mapfn = lambda a: a) -> 'Grid':
-        g = [[mapfn(j) for j in list(i)] for i in string.strip().split('\n') if i != '']
-        grid = cls()  # Create new Grid instance
-        for i in range(len(g)):
-            for j in range(len(g[i])):
-                grid[V(j, i)] = g[i][j]
-        return grid
-
-    def from_dimensions(self, width: int, height: int, default=None):  # Create empty grid with dimensions
-        grid = {}
-        for i in range(width):
-            for j in range(height):
-                grid[V(i, j)] = default
-        self = grid
+    def __init__(self, grid):
+        self.update(grid)
+        self.text = self.__str__
 
     def mass_at(self, list: list) -> list:  # Get values at coordinates
         return [self[i] for i in list]
@@ -112,6 +101,21 @@ class Grid(dict[V, typing.Any]):
             text += '\n'
         return text
 
+def grid_from_string(string: str, mapfn = lambda a: a) -> 'Grid':
+    g = [[mapfn(j) for j in list(i)] for i in string.strip().split('\n') if i != '']
+    grid = {}
+    for i in range(len(g)):
+        for j in range(len(g[i])):
+            grid[V(j, i)] = g[i][j]
+    return Grid(grid)
+
+
+def grid_from_dimensions(width: int, height: int, default=None):  # Create empty grid with dimensions
+    grid = {}
+    for i in range(width):
+        for j in range(height):
+            grid[V(i, j)] = default
+    return Grid(grid)
 # MARK: - list functions
 def list_split(list: list, length: int) -> list:  # Split list into fixed lengths
     result = []
@@ -122,7 +126,7 @@ def list_split(list: list, length: int) -> list:  # Split list into fixed length
         result.append(l)
     return result
 def product(list: list) -> float:  # Multiply all elements
-    return reduce(lambda a, b: a*b, list)
+    return reduce(lambda a, b: a*b, list, 1)
 def list_diff(x: list) -> list:  # Get differences between elements
     return [b-a for a, b in zip(x, x[1:])]
 def list_range(x: int) -> list:  # Get range as list
@@ -154,8 +158,6 @@ def shared_prefix(*lists):
 
     return shortest_list
 # MARK: - misc
-def reduced_product(l: list) -> int:  # Multiply elements with reduce
-    return reduce(lambda a, b: a*b, l)
 def ints(s: str) -> typing.List[int]:  # Extract integers from string
     return lmap(int, re.findall(r"-?\d+", s))  # thanks mserrano!
 def regular_process(inp: str) -> list:  # Split and clean input
@@ -186,7 +188,8 @@ def list_subtract(l1: list, l2: list) -> Iterator:  # Subtract list elements
     b = Counter(l2)
     c = a - b  # ignores items in b missing in a
     return c.elements()
-def length_consecutive(l: list) -> list:  # Get run lengths
+def length_consecutive(list: list) -> list:  # Get run lengths
+    l = deepcopy(list)
     result = [0]
     c = l[0]
     while l:
@@ -197,7 +200,8 @@ def length_consecutive(l: list) -> list:  # Get run lengths
             c = v
             result.append(1)
     return result
-def runs(l: list, f) -> list:  # Split into runs by condition
+def runs(list: list, f) -> list:  # Split into runs by condition
+    l = deepcopy(list)
     result = []
     currun = []
     while l:
@@ -215,3 +219,5 @@ def runs(l: list, f) -> list:  # Split into runs by condition
 def remove_char(string: str, v: str = ' ') -> str:  # Remove character from string
     string = ''.join([i for i in string if i != v])
     return string
+def split_mult(string: str, charset: str) -> str:
+    return [i for i in re.split("[" + re.escape(charset) + "]", string) if i != '']

@@ -31,51 +31,62 @@ partitions(n [size of total], k [number])
 """
 from utils import *
 from copy import deepcopy
+import re
 
-def test_a(ma, mb, mc, program):
-    a, b, c = deepcopy(ma), deepcopy(mb), deepcopy(mc)
-    output = []
-    while a != 0:
-        # b is not dependent on previous iterations
-        # thus the "ticker" is just a getting divided by 8
-        b = (a & 7) ^ 2
-        b = (b ^ (a//(1 << b))) ^ 3
-        a = a >> 3
-        output.append(b%8)
-    return output
 def part1(sample):
-    registers, program = sample.split('\n\n')
-    a, b, c = ints(registers)
-    program = ints(program)
+    instructions, map = sample.split('\n\n')
+    map = re.findall(r'(\w+) = \((\w+), (\w+)\)', map)
+    node = 'AAA'
+    n = 0
+    p = 0
+    while True:
+        if node == 'ZZZ':
+            print(n)
+            break
+        else:
+            if instructions[p] == 'L':
+                node = [m for m in map if m[0] == node][0][1]
+            else:
+                node = [m for m in map if m[0] == node][0][2]
+            p += 1
+            p = p % len(instructions)
+        n += 1
 
-    print(test_a(a, b, c, program))
+
     return
-
 def part2(sample):
-    registers, program = sample.split('\n\n')
-    program = ints(program)
+    instructions, map = sample.split('\n\n')
+    map = re.findall(r'(\w+) = \((\w+), (\w+)\)', map)
+    newmap = {}
+    for m in map:
+        newmap[(m[0], 'L')] = m[1]
+        newmap[(m[0], 'R')] = m[2]
 
-    mya = 1 # maximum that has length 16
-    matching = -1
 
-    while matching != -16:
-        output = test_a(mya, 0, 0, program)
-        if output[matching:] == program[matching:]:
-            print(mya, output)
-            mya *= 8
-            matching -= 1
-        mya += 1
-    print(mya, test_a(mya, 0, 0, program) == program, matching)
-    time.sleep(2)
+    nodes = [i[0] for i in map if i[0][-1] == 'A']
+
+    for node in nodes:
+        l = [node]
+        p = 0
+        while len(l) == 1 or l[-1][-1] != 'A':
+            print(l)
+            l.append(newmap[(l[-1], instructions[p])])
+            p = (p+1) % len(instructions)
+        print(l)
     return
 
 part = 2
-flag = 'i'
-SAMPLE = """Register A: 117440
-Register B: 0
-Register C: 0
+flag = 's'
+SAMPLE = """LR
 
-Program: 0,3,5,4,3,0
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)
 """
 
 
