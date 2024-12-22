@@ -1,14 +1,23 @@
-exec(open('../../utils.py').read())
+import sys
 from copy import deepcopy
+from utils import *
 
-sample = """"""
-inp = open('input.txt').read()
+inp = sys.stdin.read()
+sample = inp
+"""3   4
+4   3
+2   5
+1   3
+3   9
+3   3"""
+x = lmap(ints, sample.split('\n'))
+x = lmap(lambda i: sorted([a[i] for a in x]), [0, 1])
+x = sum([abs(a-b) for a, b in list(zip(*x))])
+print(x)
 
-x = list_split(ints(inp), 2)
-x = zip(sorted([i[0] for i in x]), sorted([i[1] for i in x]))
-print(sum([abs(i-j) for i,j in x]))
 
-x = list_split(ints(inp), 2)
-x1 = [i[0] for i in x]
-x2 = [i[1] for i in x]
-print(sum([i*x2.count(i) for i in x1]))
+
+y = lmap(ints, sample.split('\n'))
+y = lmap(lambda i: [a[i] for a in y], [0, 1])
+y = sum(lmap(lambda a: a*y[1].count(a), y[0]))
+print(y)

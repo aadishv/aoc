@@ -4,6 +4,8 @@ import time
 from aocd.models import Puzzle
 import argparse
 import traceback
+import sys
+from io import StringIO
 
 # argument parser
 parser = argparse.ArgumentParser(description='Run the AOC solution given a day and year')
@@ -39,6 +41,7 @@ while True:
     os.system('clear')
     print('#'*50)
     try:
+        sys.stdin = StringIO(tester.INPUT)
         exec(code)
     except Exception as e:
         #print(e)

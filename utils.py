@@ -56,10 +56,10 @@ class Grid(dict[V, typing.Any]):
 
     @property
     def width(self) -> int:  # Width of grid
-        return max([i[1] for i in self.keys()])
+        return max([i[0] for i in self.keys()])+1
     @property
     def height(self) -> int:  # Height of grid
-        return max([i[0] for i in self.keys()])
+        return max([i[1] for i in self.keys()])+1
 
     def __init__(self, grid):
         self.update(grid)
@@ -134,6 +134,8 @@ def list_range(x: int) -> list:  # Get range as list
 def lmap(func, *iterables) -> list:  # Map returning list
     return list(map(func, *iterables))
 def unique(l: list) -> list:  # Get unique elements
+    if type(l[0]) == list:
+        return [list(i) for i in set(tuple(i) for i in l)]
     return list(set(l))
 def flatten(l: list) -> list:  # Flatten nested lists
     return [item for sublist in l for item in sublist]
