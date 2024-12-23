@@ -25,7 +25,7 @@ def runs(y):
     total = defaultdict(int)
     n = 0
     for val in y:
-        print(n, len(y))
+        print(len(total))
         n += 1
         xs = [get_val_at(val, p) % 10 for p in range(2001)]
         seen = set()
