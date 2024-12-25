@@ -223,3 +223,6 @@ def remove_char(string: str, v: str = ' ') -> str:  # Remove character from stri
     return string
 def split_mult(string: str, charset: str) -> str:
     return [i for i in re.split("[" + re.escape(charset) + "]", string) if i != '']
+# MARK: - dict utilities
+def dict_invert(d: dict) -> dict:  # Invert dictionary
+    return {v: k for k, v in d.items()}

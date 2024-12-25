@@ -2,7 +2,7 @@ import sys
 from copy import deepcopy
 from utils import *
 import itertools
-import collections as colls
+from collections import defaultdict
 import networkx
 
 inp = sys.stdin.read()
@@ -45,12 +45,32 @@ pairs = [i.split('-') for i in inp.strip().split('\n')]
 
 all_comps = flatten(map(list, pairs))
 
-G = networkx.Graph()
-G.add_nodes_from(all_comps)
-for pair in pairs:
-    G.add_edge(*pair)
-    G.add_edge(*reversed(pair))
-
+network = defaultdict(set)
+for a, b in pairs:
+    network[a].add(b)
+    network[b].add(a)
+# all_comps is a list of all nodes
+# network is a map from each node to a list of its neighbors
+def icky(current_clique, candidates, excluded) -> int:
+    print(len(current_clique))
+    # given the current parameters, return the max possible clique (recursive)
+    # parameters at beginning: [], all_comps, []
+    # base case: candidates is empty, return len(current_clique)
+    if len(candidates) == 0:
+        return current_clique
+    # loop through all candidates. for each candidate, create new set of inputs with new cands/excluded
+    best = []
+    pivot = min(candidates, key=lambda node: len(network[node]))
+    for candidate in candidates - network[pivot]:
+        # we are assuming candidate is viable
+        new_clique = current_clique + [candidate]
+        new_candidates = candidates & network[candidate]
+        new_excluded = excluded & network[candidate]
+        best_clique = icky(new_clique, new_candidates, new_excluded)
+        if len(best_clique) > len(best):
+            best = best_clique
+    return best
+print(','.join(sorted(icky([], set(all_comps), set()))), 'answer')
 # queue = set(lmap(lambda i: tuple([i]), all_comps))
 # final = set()
 # while len(queue) > 0:
@@ -63,7 +83,6 @@ for pair in pairs:
 #         else:
 #             final.add(tuple(sorted(network)))
 #     queue = newq
-print(','.join(sorted(max(networkx.find_cliques(G),key=len))))
 #     #print(n, total)
 #     n += 1
 

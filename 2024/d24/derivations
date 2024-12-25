@@ -1,0 +1,315 @@
+239 y05 XOR x05 = nbc; should be svm as svm is used in the z05 calculation, this would fix "z05 intermediate v" and "z05 v" and "z05 intermediate carry 2" (which should be skn)
+
+107 y05 AND x05 -> svm; should be nbc as (nbc OR skn) XOR (x06 XOR y06) -> z06
+
+CHANGING 107, 239 to swap
+"nbc", "svm",
+
+
+
+
+256 fwr (intermediate val) XOR cpv (carry) -> kqk but SHOULD BE z15, z15 carry is showing up as z15 as 158
+
+CHANGING 158, 256 to swap
+"kqk", "z15",
+
+
+This tells the story:
+z23 v cgq
+z23 OR qdg     not found
+
+285 out should be z23, 278 out should be cgq
+
+CHANGING 278, 285 to swap
+"cgq", "z23",
+
+
+
+Similar as last time:
+
+140 fsp AND bdr -> z39
+174 bdr XOR fsp -> fnr
+
+CHANGING 140, 174 to swap
+"fnr", "z39",
+
+["nbc", "svm", "kqk", "z15", "cgq", "z23", "fnr", "z39"]
+
+
+
+
+
+--------------------
+
+
+z00 ('y00', 'XOR', 'x00')
+Carry after z00: wbd
+
+z01 intermediate v dqq
+z01 v z01
+z01 intermediate carry mhb
+z01 intermediate carry 2 kwk
+z01 carry vnc
+
+z02 intermediate v msc
+z02 v z02
+z02 intermediate carry mcc
+z02 intermediate carry 2 wdv
+z02 carry prb
+
+z03 intermediate v rvw
+z03 v z03
+z03 intermediate carry bhr
+z03 intermediate carry 2 bbq
+z03 carry nfp
+
+z04 intermediate v rcw
+z04 v z04
+z04 intermediate carry ppw
+z04 intermediate carry 2 brg
+z04 carry rgq
+
+z05 intermediate v svm
+z05 v z05
+z05 intermediate carry nbc
+z05 intermediate carry 2 skn
+z05 carry pdf
+
+z06 intermediate v wcw
+z06 v z06
+z06 intermediate carry kwc
+z06 intermediate carry 2 fcv
+z06 carry cqp
+
+z07 intermediate v rnc
+z07 v z07
+z07 intermediate carry rhs
+z07 intermediate carry 2 hdk
+z07 carry npf
+
+z08 intermediate v ktj
+z08 v z08
+z08 intermediate carry vjc
+z08 intermediate carry 2 hdf
+z08 carry jfn
+
+z09 intermediate v fmc
+z09 v z09
+z09 intermediate carry pdh
+z09 intermediate carry 2 tjk
+z09 carry vws
+
+z10 intermediate v tbk
+z10 v z10
+z10 intermediate carry rwv
+z10 intermediate carry 2 wvf
+z10 carry rjg
+
+z11 intermediate v kng
+z11 v z11
+z11 intermediate carry fpb
+z11 intermediate carry 2 rpr
+z11 carry kjr
+
+z12 intermediate v dnq
+z12 v z12
+z12 intermediate carry kkq
+z12 intermediate carry 2 qnv
+z12 carry ckr
+
+z13 intermediate v ttw
+z13 v z13
+z13 intermediate carry dhr
+z13 intermediate carry 2 phn
+z13 carry tdb
+
+z14 intermediate v mdg
+z14 v z14
+z14 intermediate carry wfh
+z14 intermediate carry 2 wth
+z14 carry cpv
+
+z15 intermediate v fwr
+z15 v z15
+z15 intermediate carry dkk
+z15 intermediate carry 2 pbd
+z15 carry kqk
+
+z16 intermediate v rbr
+z16 v z16
+z16 intermediate carry qbc
+z16 intermediate carry 2 bbm
+z16 carry gcc
+
+z17 intermediate v dhd
+z17 v z17
+z17 intermediate carry grk
+z17 intermediate carry 2 bdv
+z17 carry dbd
+
+z18 intermediate v tcb
+z18 v z18
+z18 intermediate carry djp
+z18 intermediate carry 2 fwn
+z18 carry bbc
+
+z19 intermediate v dtn
+z19 v z19
+z19 intermediate carry qrs
+z19 intermediate carry 2 wnw
+z19 carry shj
+
+z20 intermediate v wdd
+z20 v z20
+z20 intermediate carry gdg
+z20 intermediate carry 2 bvw
+z20 carry cqf
+
+z21 intermediate v mkw
+z21 v z21
+z21 intermediate carry brb
+z21 intermediate carry 2 rjf
+z21 carry nnw
+
+z22 intermediate v smn
+z22 v z22
+z22 intermediate carry dwt
+z22 intermediate carry 2 jcb
+z22 carry kph
+
+z23 intermediate v hpw
+z23 v z23
+z23 intermediate carry cgq
+z23 intermediate carry 2 qdg
+z23 carry ngq
+
+z24 intermediate v nkr
+z24 v z24
+z24 intermediate carry vbc
+z24 intermediate carry 2 swv
+z24 carry fnp
+
+z25 intermediate v grm
+z25 v z25
+z25 intermediate carry hjr
+z25 intermediate carry 2 ppj
+z25 carry drg
+
+z26 intermediate v bhw
+z26 v z26
+z26 intermediate carry cvj
+z26 intermediate carry 2 nhq
+z26 carry kjh
+
+z27 intermediate v qjd
+z27 v z27
+z27 intermediate carry chk
+z27 intermediate carry 2 frc
+z27 carry hfn
+
+z28 intermediate v stf
+z28 v z28
+z28 intermediate carry ftj
+z28 intermediate carry 2 ksd
+z28 carry vnm
+
+z29 intermediate v mdn
+z29 v z29
+z29 intermediate carry rfn
+z29 intermediate carry 2 wnd
+z29 carry jms
+
+z30 intermediate v mpv
+z30 v z30
+z30 intermediate carry ktm
+z30 intermediate carry 2 jkn
+z30 carry dck
+
+z31 intermediate v rfq
+z31 v z31
+z31 intermediate carry ddd
+z31 intermediate carry 2 spc
+z31 carry kgv
+
+z32 intermediate v srp
+z32 v z32
+z32 intermediate carry bng
+z32 intermediate carry 2 tkn
+z32 carry vdk
+
+z33 intermediate v qdt
+z33 v z33
+z33 intermediate carry bps
+z33 intermediate carry 2 rcb
+z33 carry stb
+
+z34 intermediate v cdn
+z34 v z34
+z34 intermediate carry bpm
+z34 intermediate carry 2 gjv
+z34 carry nmh
+
+z35 intermediate v vvf
+z35 v z35
+z35 intermediate carry jrm
+z35 intermediate carry 2 pbv
+z35 carry fwh
+
+z36 intermediate v tnk
+z36 v z36
+z36 intermediate carry rwt
+z36 intermediate carry 2 tsn
+z36 carry jqt
+
+z37 intermediate v jjs
+z37 v z37
+z37 intermediate carry qpr
+z37 intermediate carry 2 rbm
+z37 carry pgb
+
+z38 intermediate v gsb
+z38 v z38
+z38 intermediate carry phv
+z38 intermediate carry 2 hpf
+z38 carry fsp
+
+z39 intermediate v bdr
+z39 v z39
+z39 intermediate carry nrj
+z39 intermediate carry 2 fnr
+z39 carry sbn
+
+z40 intermediate v nqp
+z40 v z40
+z40 intermediate carry fpq
+z40 intermediate carry 2 bnb
+z40 carry kfv
+
+z41 intermediate v jmc
+z41 v z41
+z41 intermediate carry qpv
+z41 intermediate carry 2 psj
+z41 carry vsd
+
+z42 intermediate v cdq
+z42 v z42
+z42 intermediate carry tcr
+z42 intermediate carry 2 sbh
+z42 carry pcj
+
+z43 intermediate v jjm
+z43 v z43
+z43 intermediate carry tkj
+z43 intermediate carry 2 kdt
+z43 carry mjm
+
+z44 intermediate v ggt
+z44 v z44
+z44 intermediate carry hww
+z44 intermediate carry 2 sgk
+z44 carry z45
+
+
+
+
+cgq,fnr,kqk,nbc,svm,z15,z23,z39
