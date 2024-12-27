@@ -134,6 +134,8 @@ def list_range(x: int) -> list:  # Get range as list
 def lmap(func, *iterables) -> list:  # Map returning list
     return list(map(func, *iterables))
 def unique(l: list) -> list:  # Get unique elements
+    if l == []:
+        return []
     if type(l[0]) == list:
         return [list(i) for i in set(tuple(i) for i in l)]
     return list(set(l))
@@ -202,7 +204,7 @@ def length_consecutive(list: list) -> list:  # Get run lengths
             c = v
             result.append(1)
     return result
-def runs(list: list, f) -> list:  # Split into runs by condition
+def runs(list: list, f=lambda a: all([i == a[0] for i in a]) ) -> list:  # Split into runs by condition
     l = deepcopy(list)
     result = []
     currun = []
@@ -226,3 +228,5 @@ def split_mult(string: str, charset: str) -> str:
 # MARK: - dict utilities
 def dict_invert(d: dict) -> dict:  # Invert dictionary
     return {v: k for k, v in d.items()}
+def items_to_dict(items: list[tuple]):
+    return {k: v for k, v in items}
