@@ -24,7 +24,7 @@ fn main() {
     for (line, diff) in std::iter::zip(lines.clone(), diffs) {
         total += (check_good(line) as i32);
     }
-    println!("part 1: {}", total);
+    println!("part 1: {}", tl);
     let mut total = 0;
 
     for line in lines {

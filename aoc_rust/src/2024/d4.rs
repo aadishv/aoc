@@ -5,16 +5,16 @@ use aoc_rust::aoc_utils::*;
 use regex::Regex;
 use std::*;
 
-const SAMPLE: &str = "MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX";
+const SAMPLE: &str = ".M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+..........";
 
 fn main() {
     let inp = &read_in();
@@ -49,5 +49,34 @@ fn main() {
         .sum::<usize>();
 
     println!("part 1: {:?}", queue);
-    println!("part 2: {:?}", 0);
+    // println!("{}", grid);
+    let q = grid
+        .all_coords()
+        .into_iter()
+        .filter(|coord| grid[*coord] == 'A')
+        .filter(|coord| {
+            let inw = (1..(grid.width - 1)).contains(&coord.to_coord().0);
+            let inh = (1..(grid.height - 1)).contains(&coord.to_coord().1);
+            if !(inw && inh) {
+                return false;
+            }
+            let diag1 = [coord + 257, coord - 257].map(|x| grid[x]);
+            let diag2 = [coord + 255, coord - 255].map(|x| grid[x]);
+
+            // println!(
+            //     "{:?} {:?} {:?} {:?} {:?}",
+            //     coord.to_coord(),
+            //     (coord + 257).to_coord(),
+            //     (coord - 257).to_coord(),
+            //     (coord + 254).to_coord(),
+            //     (coord - 254).to_coord()
+            // );
+            return diag1.contains(&'M')
+                && diag1.contains(&'S')
+                && diag2.contains(&'M')
+                && diag2.contains(&'S');
+        })
+        .count();
+
+    println!("part 2: {:?}", q);
 }

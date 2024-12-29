@@ -74,7 +74,7 @@ impl<T: fmt::Display + Copy> IndexMut<u16> for Grid<T> {
 }
 impl<T: fmt::Display + Copy + std::str::FromStr> Grid<T> {
     pub fn fromstr(s: &str, default: T) -> Self {
-        let mut hashmap = HashMap::<u16, T>::new();
+        let mut hashmap = HashMap::new();
         let width: u8;
         let height: u8;
         let lines: Vec<Vec<T>> = s
@@ -190,10 +190,10 @@ pub fn flatten<T>(nested: Vec<Vec<T>>) -> Vec<T> {
 }
 pub fn read_in() -> String {
     let mut buffer = String::new();
-    match io::stdin().read_to_string(&mut buffer) {
-        Ok(_) => return buffer,
-        Err(error) => panic!("couldn't read input"),
-    };
+    io::stdin()
+        .read_to_string(&mut buffer)
+        .expect("Pass puzzle input as an argument");
+    buffer
 }
 pub fn lines(string: &str) -> Vec<String> {
     string
@@ -209,17 +209,16 @@ pub fn strtoint(string: &str) -> i32 {
     }
 }
 pub fn matches(re: Regex, s: &str) -> Vec<String> {
-    re.find_iter(&s)
+    re.find_iter(s)
         .map(|x| s[x.start()..x.end()].to_string())
         .collect::<Vec<_>>()
 }
 pub fn ints(string: &str) -> Vec<i32> {
     let re = Regex::new(r"-?\d+").unwrap();
-    return re
-        .find_iter(&string)
+    re.find_iter(&string)
         .map(|x| string[x.start()..x.end()].to_string())
         .map(|x| strtoint(&x))
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
 }
 
 pub fn list_diff<T: std::ops::Sub<Output = T> + Copy>(list: Vec<T>) -> Vec<T> {

@@ -5,8 +5,8 @@ authors = ["Aadish <aadish@ohs.stanford.edu>"]
 edition = "2021"
 
 [[bin]]
-name = "rust_test"
-path = "src/2024/d4.rs"
+name = "aoc_rust"
+path = "src/2024/d5.rs"
 
 [dependencies]
 regex = "1.3.9"
