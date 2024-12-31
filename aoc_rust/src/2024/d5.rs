@@ -27,15 +27,13 @@ const SAMPLE: &str = "47|53
 75|13
 53|13
 
-75,47,61,53,29
-97,61,53,29,13
-75,29,13
 75,97,47,61,53
 61,13,29
 97,13,75,29,47";
 
 fn main() {
     let inp = &read_in();
+
     // both inp and sample are &str to avoid ownership issues; use String::from(_) or _.to_owned() or _.to_string() to get a non-sizable version
     let rules: Vec<_> = lines(inp.split("\n\n").collect::<Vec<_>>()[0])
         .into_iter()
@@ -57,5 +55,31 @@ fn main() {
         })
         .collect();
     println!("part 1: {:?}", seqs.iter().sum::<i32>());
-    println!("part 2: {:?}", 0);
+
+    let seqs: i32 = lines(inp.split("\n\n").collect::<Vec<_>>()[1])
+        .into_iter()
+        .map(|a| a.split(",").map(|s| s.to_string()).collect::<Vec<_>>())
+        .filter(|seq| {
+            !(0..seq.len()).all(|idx| {
+                (idx + 1..seq.len()).all(|b| rules.contains(&&(seq[idx].clone(), seq[b].clone())))
+            })
+        })
+        .map(|seq| {
+            let amounts: Vec<_> = seq
+                .iter()
+                .map(|e| {
+                    return rules
+                        .iter()
+                        .filter(|rule| rule.0 == *e && seq.contains(&rule.1))
+                        .count();
+                })
+                .collect();
+            let mid_idx = amounts
+                .iter()
+                .position(|&x| x == seq.len() / 2)
+                .expect("should find middle element");
+            strtoint(&seq[mid_idx])
+        })
+        .sum::<i32>();
+    println!("part 2: {:?}", seqs);
 }

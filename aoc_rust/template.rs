@@ -2,7 +2,6 @@
 
 extern crate aoc_rust;
 use aoc_rust::aoc_utils::*;
-use regex::Regex;
 use std::*;
 
 const sample: &str = "";

@@ -6,7 +6,7 @@ edition = "2021"
 
 [[bin]]
 name = "aoc_rust"
-path = "src/2024/d5.rs"
+path = "src/2024/d6.rs"
 
 [dependencies]
 regex = "1.3.9"

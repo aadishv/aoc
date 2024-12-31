@@ -6,7 +6,7 @@ use std::fmt::{self};
 use std::io::{self, Error, Read};
 use std::ops::{Index, IndexMut};
 
-#[derive(fmt::Debug)]
+#[derive(fmt::Debug, Clone)]
 pub struct Grid<T: Copy + fmt::Display> {
     pub grid: HashMap<u16, T>,
     pub width: u8,
