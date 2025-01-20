@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use itertools::{Itertools, MultiProduct};
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::{self};
@@ -202,8 +203,8 @@ pub fn lines(string: &str) -> Vec<String> {
         .filter(|x| *x != String::from(""))
         .collect::<Vec<_>>()
 }
-pub fn strtoint(string: &str) -> i32 {
-    match string.parse::<i32>() {
+pub fn strtoint(string: &str) -> i64 {
+    match string.parse::<i64>() {
         Ok(n) => return n,
         Err(e) => panic!("Failed to convert '{}' to a number", string),
     }
@@ -213,7 +214,7 @@ pub fn matches(re: Regex, s: &str) -> Vec<String> {
         .map(|x| s[x.start()..x.end()].to_string())
         .collect::<Vec<_>>()
 }
-pub fn ints(string: &str) -> Vec<i32> {
+pub fn ints(string: &str) -> Vec<i64> {
     let re = Regex::new(r"-?\d+").unwrap();
     re.find_iter(&string)
         .map(|x| string[x.start()..x.end()].to_string())
@@ -225,4 +226,12 @@ pub fn list_diff<T: std::ops::Sub<Output = T> + Copy>(list: Vec<T>) -> Vec<T> {
     (1..list.len())
         .map(|x| list[x] - list[x - 1])
         .collect::<Vec<T>>()
+}
+
+pub fn product_repeat<I>(it: I, repeat: usize) -> MultiProduct<I>
+where
+    I: Iterator + Clone,
+    I::Item: Clone,
+{
+    std::iter::repeat(it).take(repeat).multi_cartesian_product()
 }
