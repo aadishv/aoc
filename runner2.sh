@@ -1,0 +1,1 @@
+uv run blog.py
